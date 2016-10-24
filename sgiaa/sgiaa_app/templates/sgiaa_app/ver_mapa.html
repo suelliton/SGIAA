@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Mapa Risco</title>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/master.css' %}" >
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="javascript:window.history.go(-1)"><button type="button" class="btn btn-primary btn-xs">Voltar</button></a>
+
+
+    <div id="map"></div>
+    <script>
+
+// This example creates circles on the map, representing populations in North
+// America.
+// First, create an object containing LatLng and population for each city.
+
+var citymap = {
+  {% for bairro in all_bairros %}
+    {{bairro.id}} :{
+      center:{{bairro.coordenadas}},
+      population:{{bairro.bairro_risco}}
+    },
+  {% endfor %}
+/*
+Alecrim:{ center :{lat:-5.7978694,lng :-35.2175944},population : 200},
+Areia_Preta:{ center :{lat:-5.785360499999999,lng :-35.1914893},population : 200},
+Barro_Vermelho:{ center :{lat:-5.799656199999999,lng :-35.2079777},population : 200},
+Bom_Pastor:{ center :{lat:-5.807496899999999,lng :-35.2429333},population : 200},
+Candelaria:{ center :{lat:-5.8440813,lng :-35.2203419},population : 200},
+Capim_Macio:{ center :{lat:-5.8512958,lng :-35.20449840000001},population : 200},
+Cidade_Alta:{ center :{lat:-5.7864027,lng :-35.2079777},population : 200},
+Cidade_da_Esperança:{ center :{lat:-5.8276278,lng :-35.2340777},population : 200},
+Cidade_Nova:{ center :{lat:-5.8344657,lng :-35.2423933},population : 200},
+Dix_Sept_Rosado:{ center :{lat:-5.8084932,lng :-35.2248985},population : 200},
+Felipe_Camarao:{ center :{lat:-5.8240465,lng :-35.253304},population : 200},
+Guarapes:{ center :{lat:-5.8313139,lng :-35.2752715},population : 200},
+Igapo:{ center :{lat:-5.7657269,lng :-35.2664651},population : 200},
+Lagoa_Azul:{ center :{lat:-5.736341599999999,lng :-35.2604535},population : 200},
+Lagoa_Nova:{ center :{lat:-5.8259362,lng :-35.2099611},population : 200},
+Lagoa_Seca:{ center :{lat:-5.806089099999999,lng :-35.2107255},population : 200},
+Mãe_Luiza:{ center :{lat:-5.7992004,lng :-35.1832438},population : 200},
+Neopolis:{ center :{lat:-5.8693931,lng :-35.2066038},population : 200},
+Nordeste:{ center :{lat:-5.79468,lng :-35.2413687},population : 200},
+Natal:{ center :{lat:-5.7792569,lng :-35.200916},population : 200},
+Nazare:{ center :{lat:-5.8177824,lng :-35.2327042},population : 200},
+Nova_Descoberta:{ center :{lat:-5.8232887,lng :-35.199522},population : 200},
+Pajucara:{ center :{lat:-5.7373002,lng :-35.2313307},population : 200},
+Petropolis:{ center :{lat:-5.7831747,lng :-35.1971454},population : 200},
+Pitimbu:{ center :{lat:-5.862997399999999,lng :-35.2340777},population : 200},
+Planalto:{ center :{lat:-5.8515269,lng :-35.253008},population : 200},
+Ponta_Negra:{ center :{lat:-5.8855377,lng :-35.1706876},population : 200},
+Potengi:{ center :{lat:-5.7511801,lng :-35.2551617},population : 200},
+Praia_do_Meio:{ center :{lat:-5.777687500000001,lng :-35.1949411},population : 200},
+Quintas:{ center :{lat:-5.7966998,lng :-35.2340777},population : 200},
+Redinha:{ center :{lat:-5.7446267,lng :-35.208309},population : 200},
+Ribeira:{ center :{lat:-5.775555,lng :-35.2052299},population : 200},
+Rocas:{ center :{lat:-5.7737349,lng :-35.1997339},population : 200},
+Salinas:{ center :{lat:-5.7814375,lng :-35.2313307},population : 200},
+Santos_Reis:{ center :{lat:-5.763701999999999,lng :-35.2011079},population : 200}
+Tirol:{ center :{lat:-5.8034577 ,lng :-35.2011079},population : 200}*/
+};
+
+function initMap() {
+  // Create the map.
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 13,
+    center: {lat:-5.8259362,lng :-35.2099611},//{lat: -5.79448, lng: -35.211},
+    mapTypeId: google.maps.MapTypeId.HYBRID
+  });
+
+  // Construct the circle for each value in citymap.
+  // Note: We scale the area of the circle based on the population.
+  for (var city in citymap) {
+    // Add the circle for this city to the map.
+    var cor;
+    if(citymap[city].population == 1 ){     cor = '#95a5a6' ;
+    }else if(citymap[city].population == 2){   cor = '#2ecc71';
+    }else if(citymap[city].population == 3){   cor = '#3498db';
+    }else if(citymap[city].population == 4){   cor = '#d35400';
+    }else if(citymap[city].population == 5){   cor = '#e74c3c';
+    }
+    var cityCircle = new google.maps.Circle({
+      strokeColor: cor,
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: cor,
+      fillOpacity: 0.75,
+      map: map,
+      center: citymap[city].center,
+      radius: Math.sqrt(citymap[city].population) * 325
+    });
+
+
+
+  }
+}
+
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2j9HL1dcHxSZGc6MhQBqPolkvpo_AdMo&signed_in=true&callback=initMap"></script>
+  </body>
+</html>

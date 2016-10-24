@@ -1,0 +1,19 @@
+{% extends 'sgiaa_app/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+
+
+<div class="">
+  <div class="container">
+    <div style="background-color:#1abc9c;padding:20px;margin-bottom:-10px;" class="jumbotron">
+    <h1 style="font-size:55px;font-weight:bolder;color:#ecf0f1;">SGIAA</h1>
+    <h2 style="color:#ecf0f1;">Sistema de Gerenciamento do indice de ocorrência do mosquito Aedes Aegypt</h2>
+    </div>
+
+    <a href="ver_bairros" ><button  type="button" class="btn btn-primary navbar-btn">Bairros </button></a>
+    <a href="ver_bairros" ><button  type="button" class="btn btn-primary btn-default navbar-btn">Regiões </button></a>
+          <img style="margin:50px;margin-left:150px;margin-top:-10px;" class="text-center" width="900" height="500" src="{% static '/imagens/aedes_editado.png' %}" alt="" />
+</div>
+
+{% endblock content %}

@@ -1,0 +1,81 @@
+{% extends 'sgiaa_app/base.html' %}
+{% load staticfiles %}
+
+
+
+{% block content %}
+<form class="form-control" action="index.html" method="post">
+
+
+<button class="btn btn-default" type="button"  ><a class="btn btn-default" href="{% url 'ver_bairros_risco' risco=1 %}"></a>Nivel 1</button>
+<button class="btn btn-success" type="button" >Nivel 2</button>
+<button class="btn btn-primary" type="button" >Nivel 3</button>
+<button class="btn btn-warning" type="button" >Nivel 4</button>
+<button class="btn btn-danger" type="button" >Nivel 5</button>
+</form>
+<div class="container-fluid">
+
+
+<div class="box">
+
+       <h1>Estatística de risco de infecção pelo mosquito Aedes Aegypt</h1>
+       <h2 class="text-center">Bairros de Natal</h2>
+            <div class="box-chart">
+           <canvas id="GraficoBarra" style="width:100%;"></canvas>
+
+           <script type="text/javascript">
+               var options2 = {
+                   responsive:true
+               };
+               var data2 = {
+
+                   labels:[ {% for bairro in all_bairros %} "{{bairro.nome}}", {% endfor %}] ,
+                   datasets: [
+                       {
+                           label: "Dados primários",
+                           fillColor: "rgba(128,0,128,0.8)",
+                           strokeColor: "rgba(200,220,220,0.8)",
+                           highlightFill: "rgba(20,220,220,0.75)",
+                           highlightStroke: "rgba(220,220,220,1)",
+                           data:[{% for bairro in all_bairros %} "{{bairro.bairro_risco}}", {% endfor %}],
+                       },
+                   ]
+               };
+
+               window.onload = function(){
+
+                     var ctx = document.getElementById("GraficoBarra").getContext("2d");
+                    var BarChart = new Chart(ctx).Bar(data2, options2);
+                    carrega();
+                }
+           </script>
+           <a href="javascript:window.history.go(-1)">Voltar</a>
+       </div>
+   </div>
+
+   <div class="row" id="tabela">
+       <div class="container">
+         <div class="table-responsive">
+           <div class="col-md-6 col-md-offset-3">
+               <table class="table table-striped">
+                 <thead  class="text-center">
+                   <tr>NOME</tr>
+                   <tr >&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                      &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbspRISCO</tr>
+                 </thead>
+
+                 <tbody>
+                   {% for  bairro in all_bairros %}
+                   <tr>
+                         <td>{{bairro.nome}}</td>
+                         <td>{{bairro.bairro_risco}}</td>
+                   </tr>
+                   {% endfor %}
+                 </tbody>
+               </table>
+           </div>
+         </div>
+       </div>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'sgiaa_app/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static '/css/master.css' %}" >
+  </head>
+<body>
+
+<div class="container">
+  <div class="box">
+      <div class="success"><h1>Estatística de risco de infecção pelo mosquito Aedes Aegypt</h1></div>
+       <h2 class="text-center">{{titulo}}</h2>
+       <div class="col-md-5">
+         <div class="btn-toolbar">
+           <div class="btn-group btn-group-xs data-toggle=buttons">
+               <a href="http://localhost:8000/ver_bairros"><button class="btn " style="color-background:#8e44ad;" type="button"  >Geral</button></a>
+               <a href="http://localhost:8000/ver_bairros_1"><button class="btn btn-default" type="button"  >Nivel 1</button></a>
+               <a href="http://localhost:8000/ver_bairros_2"><button class="btn btn-success" type="button"  >Nivel 2</button></a>
+               <a href="http://localhost:8000/ver_bairros_3"><button class="btn btn-primary" type="button"   >Nivel 3</button></a>
+               <a href="http://localhost:8000/ver_bairros_4"><button class="btn btn-warning" type="button"   >Nivel 4</button></a>
+               <a href="http://localhost:8000/ver_bairros_5"><button class="btn btn-danger"  type="button"   >Nivel 5</button></a>
+
+           </div>
+         </div>
+       </div>
+       <a href="http://localhost:8000/ver_mapa"><button class="btn " id="btn_ver_mapa" style="color-background:#8e44ad;" type="button"  >Ver mapa</button></a>
+
+       <div class="col-md-5">
+         <div class="col-md-offset-2">
+          <div class="btn-toolbar">
+             <div class="btn-group btn-group-xs data-toggle=buttons">
+                 <a href="http://localhost:8000/ver_regiao_1"><button class="btn btn-primary" type="button"  >Zona norte</button></a>
+                 <a href="http://localhost:8000/ver_regiao_2"><button class="btn btn-primary" type="button"  >Zona sul </button></a>
+                 <a href="http://localhost:8000/ver_regiao_3"><button class="btn btn-primary" type="button"   >Zona leste</button></a>
+                 <a href="http://localhost:8000/ver_regiao_4"><button class="btn btn-primary" type="button"   >Zona oeste </button></a>
+             </div>
+          </div>
+        </div>
+      </div>
+
+            <div id="box-chart" class="box-chart" style="{{margem}}">
+                <canvas id="GraficoBarra" style="width:100%"></canvas>
+                <script type="text/javascript">
+                   var options2 = {
+                       responsive:true
+                   };
+                   var data2 = {
+
+                       labels:[ {% for bairro in all_bairros %} "{{bairro.nome}}", {% endfor %}] ,
+                       datasets: [
+                           {
+                               label: "Dados primários",
+                               fillColor: "rgba({{cor}})",
+                               strokeColor: "rgba(200,220,220,0.8)",
+                               highlightFill: "rgba(20,220,220,0.75)",
+                               highlightStroke: "rgba(220,220,220,1)",
+                               data:[{% for bairro in all_bairros %} "{{bairro.bairro_risco}}", {% endfor %}],
+                           },
+                       ]
+                   };
+
+                   window.onload = function(){
+                         var ctx = document.getElementById("GraficoBarra").getContext("2d");
+                        var BarChart = new Chart(ctx).Bar(data2, options2);
+                        carrega();
+                    }
+               </script>
+           <a href="javascript:window.history.go(-1)"><button type="button" class="btn btn-primary">Voltar</button></a>
+       </div>
+   </div>
+   <br/>
+   <br/>
+   <h1 class="text-center">Informações detalhadas</h1>
+   <br/>
+   <br/>
+   <div class="row" id="tabela">
+       <div class="container">
+         <div class="table-responsive">
+           <div class="col-md-10 col-md-offset-1">
+               <table class="table table-striped">
+                 <thead >
+                   <tr>
+                     <th>NOME</th>
+                     <th>TOTAL OVOS</th>
+                     <th>TOTAL ECLOSÃO</th>
+                     <th>TOTAL LARVAS</th>
+                     <th>RISCO</th>
+                   </tr>
+                 </thead>
+
+                 <tbody>
+                   {% for  bairro in all_bairros %}
+                   <tr>
+                         <td>{{bairro.nome}}</td>
+                         <td>{{bairro.total_ovos}}</td>
+                         <td>{{bairro.taxa_eclusao}}</td>
+                         <td>{{bairro.total_larvas}}</td>
+                         <td>{{bairro.bairro_risco}}</td>
+                   </tr>
+                   {% endfor %}
+                 </tbody>
+               </table>
+           </div>
+         </div>
+       </div>
+   </div>
+</div>
+</body>
+</html>
+{% endblock %}

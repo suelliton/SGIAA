@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SGIAA</title>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/master.css' %}" >
+    <script src="{% static '/lib/Chart.min.js' %}"></script>
+ </head>
+  <body>
+
+
+           <div class="">
+           {% block content %}
+           {% endblock %}
+           </div>
+
+<!--
+<div  class=" col-md-12 ">
+    <div id="rodape" class="footer navbar-fixed-bottom">
+          <h4 class="text-center "id="text-rodape">SGIAA  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+            Versão Beta &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+            Copyright&copy All rights reserved &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp
+           Aton Corporation.  2016</h4>
+    </div>
+</div>-->
+
+<div id="rodape" class="copyright">
+  <div class="container-fluid">
+    <div class="col-md-6">
+      <p>© 2016 - All Rights with Aton Corporation&copy</p>
+    </div>
+    <div class="col-md-6">
+      <ul class="bottom_ul">
+        <li><a href="http://localhost:8000">sgiaa.com</a></li>
+        <li><a href="#">Sobre nós</a></li>
+        <li><a href="#">Perguntas frequentes</a></li>
+        <li><a href="#">Nos contate</a></li>
+      </ul>
+    </div>
+  </div
+
+
+
+
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"> </script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  </body>
+</html>
